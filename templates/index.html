@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+    <head>
+        <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+        <script>
+            window.onload = function () {
+                const finishedMessage = document.querySelector(".finished");
+
+                if (finishedMessage) {
+                    var duration = 15 * 1000;
+                    var animationEnd = Date.now() + duration;
+                    var defaults = {
+                        startVelocity: 30,
+                        spread: 360,
+                        ticks: 60,
+                        zIndex: 0,
+                    };
+
+                    function randomInRange(min, max) {
+                        return Math.random() * (max - min) + min;
+                    }
+
+                    var interval = setInterval(function () {
+                        confetti({
+                            ...defaults,
+                            particleCount: 2,
+                            origin: {
+                                x: randomInRange(0.1, 0.9),
+                                y: Math.random() - 0.2,
+                            },
+                        });
+                    }, 50);
+                } else {
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                }
+            };
+        </script>
+        <title>Countdown!</title>
+        <link
+            href="{{ url_for('static', filename='css/style.css') }}"
+            rel="stylesheet"
+        />
+        <meta title="we need to count things - UpsidedownProduction" />
+    </head>
+    <body>
+        <div class="ping-container">
+            <h1>Countdown</h1>
+            <h2>
+                <span>"we need to count things" -UpsidedownProduction</span>
+            </h2>
+            <div class="timer">
+                <br />
+                <br />
+                <br />
+                <br />
+                {% if dati %}
+
+                <div class="timer">
+                    {{ dati.giorni }}<span class="unit">gg</span> {{
+                    "%02d"|format(dati.ore) }}<span class="ping-button">h</span>
+                    {{ "%02d"|format(dati.minuti) }}<span class="ping-button"
+                        >m</span
+                    >
+                    {{ "%02d"|format(dati.secondi) }}<span class="ping-button"
+                        >s</span
+                    >
+                </div>
+                {% else %}
+                <div class="timer">
+                    <span class="finished">welcome to the new year</span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </body>
+</html>
